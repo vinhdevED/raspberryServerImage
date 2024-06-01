@@ -1,9 +1,17 @@
 from flask import Flask, render_template, request, redirect
 import os
+import RPi.GPIO as GPIO
+import time
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'static/uploads/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# Setup GPIO
+LED_PIN = 17
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(LED_PIN, GPIO.OUT)
+
 
 # Ensure the upload directory exists
 if not os.path.exists(UPLOAD_FOLDER):
@@ -24,8 +32,16 @@ def upload_file():
         filename = file.filename
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(file_path)
+        # Blink LED for 2 seconds
+        GPIO.output(LED_PIN, GPIO.HIGH)
+        time.sleep(2)
+        GPIO.output(LED_PIN, GPIO.LOW)
+
         return render_template('index.html', image_url=file_path)
     return redirect('/')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    try:
+        app.run(host='0.0.0.0', port=5000, debug=True)
+    finally:
+        GPIO.cleanup()
