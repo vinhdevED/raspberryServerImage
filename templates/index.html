@@ -1,43 +1,78 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<!--    <title>Image Upload Dashboard</title>-->
-<!--</head>-->
-<!--<body>-->
-<!--    <h1>Upload an Image</h1>-->
-<!--    <form action="/upload" method="post" enctype="multipart/form-data">-->
-<!--        <input type="file" name="image" accept="image/*" required>-->
-<!--        <button type="submit">Send Image</button>-->
-<!--    </form>-->
-<!--    {% if image_url %}-->
-<!--    <h2>Uploaded Image</h2>-->
-<!--    <img src="{{ image_url }}" alt="Uploaded Image" style="max-width: 100%;">-->
-<!--    {% endif %}-->
-<!--</body>-->
-<!--</html>-->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Chest X-Ray Classification</title>
+    <title>Project: AI in Engineering</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: linear-gradient(to bottom right, #86A8E7, #91EAE4);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin: 20px;
+        }
+        input[type="file"] {
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        img {
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body>
     <h1>Upload a X-Ray Image</h1>
     <form action="/upload" method="post" enctype="multipart/form-data">
         <input type="file" name="image" id="image">
         <br><br>
-        <button type="submit">Send File</button>
+        <div class="button-group">
+            <button type="submit">Send File</button>
+            {% if image_url %}
+            <form action="/predict" method="post">
+                <input type="hidden" name="image_url" value="{{ image_url }}">
+                <button type="submit">Predict Image</button>
+            </form>
+            {% endif %}
+        </div>
     </form>
-    {% if image_url %}
-    <h2>Uploaded Image</h2>
-    <img src="{{ image_url }}" alt="Uploaded Image" width="300">
-    <form action="/predict" method="post">
-        <input type="hidden" name="image_url" value="{{ image_url }}">
-        <button type="submit">Predict Image</button>
-    </form>
-    {% endif %}
 </body>
 </html>
